@@ -1,0 +1,30 @@
+//  global styles for the entire application
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif,system-ui;
+  font-weight: 300;
+  /*
+  -- the order matters here as font-family is read from left to right
+  -- and the first available font will be used.
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+// a style kind of the same as <Link/> 
+a {
+  text-decoration: none;
+  color: black
+}
+
+//the below rule is used to ensure that the width and height of all elements are calculated based on their content, padding, and border, rather than just their content. This is a common practice in CSS to make layout calculations easier and more predictable.
+* {
+  box-sizing: border-box;
+}
