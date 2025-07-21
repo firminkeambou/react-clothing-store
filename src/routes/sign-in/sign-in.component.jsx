@@ -1,18 +1,53 @@
 import React from 'react'
-import { signInWithGooglePopup,createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils.js';
+import { useEffect } from 'react';
+import { getRedirectResult } from 'firebase/auth';
+
+import {
+  auth,
+  signInWithGooglePopup,
+  signInWithGoogleRedirect,
+  createUserDocumentFromAuth
+ } from '../../utils/firebase/firebase.utils.js';
+
+import SignUpForm from '../../components/sign-up-form/sign-up-form.component.jsx'; // Importing the SignUpForm component
 
 const SignIn = () => {
+  // This effect runs when the component mounts and checks if there is a redirect result from Google sign-in
+  // If there is a result, it creates a user document in Firestore for the authenticated user
+ // This is useful for handling cases where the user is redirected back to the app after signing in with Google, because when redirected,the component is unmounted and remounted back after redirect
+ // This line is fired  when we click on the "Sign in with Google Redirect" button
+ // and the user is redirected to the Google sign-in page, after signing in, the user is redirected back to the app
+ // and the getRedirectResult function is called to get the result of the sign-in operation 
+ useEffect(() => {
+    const getRedirectResultAsync = async () => {
+      // not working at the moment, because it is not working with the latest version of Firebase
+      const response = await getRedirectResult(auth); //auth is the Firebase auth instance,
+      console.log(response);//
+      if (response) {
+        const userDocRef = await createUserDocumentFromAuth(response.user);
+        console.log(userDocRef);
+      }
+    }
+    getRedirectResultAsync();
+  }, []); // empty dependency array means this effect runs once when the component mounts
+
   const logGoogleUser = async () => {
     const {user} = await signInWithGooglePopup();
-    console.log(user);
-    createUserDocumentFromAuth(user);
+    //console.log(user);
+    const userDocRef = await createUserDocumentFromAuth(user); // this method needs the authenticated user, so it can creates a document
   }
+
+    
   return (
     <div>
         <h1>SignIn Page</h1>
         <button onClick={logGoogleUser}>
                 Sign in with Google Popup
         </button>
+        {/* <button onClick={signInWithGoogleRedirect}>
+                Sign in with Google Redirect
+        </button> */}
+        <SignUpForm />
     </div>
   )
 }
