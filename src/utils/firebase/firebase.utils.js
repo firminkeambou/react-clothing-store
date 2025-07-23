@@ -1,11 +1,12 @@
 // 1- importing the necessary Firebase modules to set up authentication in a React application
 import { initializeApp } from "firebase/app"; // initializes the Firebase app with the provided configuration
 import {
-     getAuth ,
+     getAuth ,//get the firebase instance we are working with
      signInWithRedirect,
      signInWithPopup,
      GoogleAuthProvider,
-     createUserWithEmailAndPassword
+     createUserWithEmailAndPassword,
+     signInWithEmailAndPassword
 } from "firebase/auth"; // imports the Firebase Authentication service
 
 import { 
@@ -38,6 +39,9 @@ googleProvider.setCustomParameters({
 export const auth = getAuth(); // gets the Firebase Authentication instance
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider); // exports a function that allows users to sign in with a Google popup window
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider); // exports a function that allows users to sign in with a Google redirect, which means the user will be redirected to the Google sign-in page and then back to your app after authentication
+
+
+
 //now go online and create a new project in Firebase console
 //https://console.firebase.google.com/u/0/project/seven7digit-clothing-db/authentication/providers
 
@@ -73,4 +77,9 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return; // checks if the email and password are provided, if not, it returns undefined
   return await createUserWithEmailAndPassword(auth, email, password); // creates a new user with the provided email and password using Firebase Authentication
+};
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return; // checks if the email and password are provided, if not, it returns undefined
+  return await signInWithEmailAndPassword(auth, email, password); // creates a new user with the provided email and password using Firebase Authentication
 };

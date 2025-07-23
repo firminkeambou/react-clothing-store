@@ -1,17 +1,16 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { getRedirectResult } from 'firebase/auth';
-
+// we can get rid of the following import as we no longer need getRedirectResult
 import {
   auth,
-  signInWithGooglePopup,
-  signInWithGoogleRedirect,
   createUserDocumentFromAuth
  } from '../../utils/firebase/firebase.utils.js';
 
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component.jsx'; // Importing the SignUpForm component
-
-const SignIn = () => {
+import SignInForm from '../../components/sign-in-form/sign-in-form.component.jsx';
+import './authentication.styles.scss'
+const Authentication = () => {
   // This effect runs when the component mounts and checks if there is a redirect result from Google sign-in
   // If there is a result, it creates a user document in Firestore for the authenticated user
  // This is useful for handling cases where the user is redirected back to the app after signing in with Google, because when redirected,the component is unmounted and remounted back after redirect
@@ -31,25 +30,17 @@ const SignIn = () => {
     getRedirectResultAsync();
   }, []); // empty dependency array means this effect runs once when the component mounts
 
-  const logGoogleUser = async () => {
-    const {user} = await signInWithGooglePopup();
-    //console.log(user);
-    const userDocRef = await createUserDocumentFromAuth(user); // this method needs the authenticated user, so it can creates a document
-  }
 
     
   return (
-    <div>
-        <h1>SignIn Page</h1>
-        <button onClick={logGoogleUser}>
-                Sign in with Google Popup
-        </button>
+    <div  className='authentication-container'>
+       <SignInForm/>
         {/* <button onClick={signInWithGoogleRedirect}>
                 Sign in with Google Redirect
         </button> */}
-        <SignUpForm />
+       <SignUpForm />
     </div>
   )
 }
 
-export default SignIn
+export default Authentication

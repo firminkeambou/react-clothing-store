@@ -2,7 +2,7 @@ import React from 'react'
 import { Route,Routes} from 'react-router-dom'
 import Home from './routes/home/home.component.jsx'; // Importing the Home component
 import Navigation from './routes/navigation/navigation.component.jsx';
-import SignIn from './routes/sign-in/sign-in.component.jsx'; // Importing the SignIn component
+import Authentication from './routes/authentication/authentication.component.jsx'; // Importing the SignIn component
 
 
 const Shop = ( ) => {
@@ -23,7 +23,7 @@ return (
             <Route index element={<Home/>} />
             <Route path='shop' element={<Shop />} />
             {/** Nested route == sign-in */}
-            <Route path='signIn' element={<SignIn />} />
+            <Route path='auth' element={<Authentication />} />
          </Route>
      
     </Routes>
