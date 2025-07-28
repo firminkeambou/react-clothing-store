@@ -5,12 +5,14 @@ import Navigation from './routes/navigation/navigation.component.jsx';
 import Authentication from './routes/authentication/authentication.component.jsx'; // Importing the SignIn component
 
 
+
 const Shop = ( ) => {
    return <h1> I am the shop page</h1>
 }
 const App = () => {
 // the App component serves as the main entry point for the application
 // it imports and renders the Directory component which displays a list of category items
+
 return (
     <Routes>
 

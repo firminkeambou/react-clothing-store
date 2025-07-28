@@ -2,14 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
+import { UserProvider } from './contexts/user.context';    // Importing the UserProvider context to manage user state  == the main idea here is to get access to thee current state of the user, and the function to update it across the application
+import App from './App'; // Importing the main App component
 //import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <UserProvider>
+        {/** The UserProvider component wraps the App component to provide user context to the entire application */}
+        {/** This allows any component within the App to access the current user state and update it */}
         <App />
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
