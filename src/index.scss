@@ -1,8 +1,9 @@
 //  global styles for the entire application
 body {
   margin: 0;
-  font-family: 'Open Sans', sans-serif,system-ui;
+  font-family: 'Open Sans', sans-serif, system-ui;
   font-weight: 300;
+  padding: 20px 40px;
   /*
   -- the order matters here as font-family is read from left to right
   -- and the first available font will be used.
@@ -18,10 +19,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-// a style kind of the same as <Link/> 
+// a style kind of the same as <Link/>
 a {
   text-decoration: none;
-  color: black
+  color: black;
 }
 
 //the below rule is used to ensure that the width and height of all elements are calculated based on their content, padding, and border, rather than just their content. This is a common practice in CSS to make layout calculations easier and more predictable.

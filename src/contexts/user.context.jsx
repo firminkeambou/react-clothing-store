@@ -25,6 +25,7 @@ export const UserProvider = ({ children }) => {
       //console.log('User state changed:', user);
       if (user) {
         createUserDocumentFromAuth(user);
+        console.log('from onAuthStateChangedListener:', user);
       }
       setCurrentUser(user);
     });

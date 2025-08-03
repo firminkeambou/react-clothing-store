@@ -34,9 +34,13 @@ const SignUpForm = () => {
       );
       //setCurrentUser(user); // Update the current user in UserContext
 
+      // this will overwrite the user document in Firestore with the new user data
+      // if the user document already exists, it will update the existing document with the new data given that onAuthStateChangedListener will have created the user document reference by the time we get here
       const userDocRef = await createUserDocumentFromAuth(user, {
         displayName,
-      }); // creates a user document in Firestore with the authenticated user and display name
+      });
+      // creates a user document in Firestore with the authenticated user and display name
+
       resetFormFields(); // resets the form fields to default after successful sign up
     } catch (error) {
       console.error('Error creating user', error);

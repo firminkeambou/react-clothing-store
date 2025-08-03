@@ -1,15 +1,19 @@
 import React, { useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import CartIcon from '../../components/cart-icon/cart-icon.component';
 import { Fragment } from 'react'; // used to wrap multiple elements without adding extra nodes to the DOM
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'; // custom SVG logo component, this allows us to use the SVG as a React component
 import { UserContext } from '../../contexts/user.context';
+import { CartContext } from '../../contexts/cart.context'; // Importing the ToggleContext to manage toggle state
 import { signOutUser } from '../../utils/firebase/firebase.utils'; // Importing the signOutUser function to handle user sign out
 import './navigation.styles.scss'; // styles for the navigation component
+import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 
 // <Link className='nav-link' to='/'> Home </Link>
 //<Link className='nav-link' to='/contact'> Contact </Link>
 const Navigation = () => {
   const { currentUser } = useContext(UserContext); // Accessing or subscribing to the current user from UserContext
+  const { isCartOpen } = useContext(CartContext);
   //console.log('login user', currentUser); // Logging the current user to the console, this will be null if no user is signed in
   /*
     depended on user.context.jsx to update the currentUser state, so we don't need to use setCurrentUser here anymore, we can remove it from the UserContext
@@ -46,7 +50,12 @@ const Navigation = () => {
               </Link>
             )
           }
+          {/** CartIcon component is used to show the cart icon in the navigation bar */}
+          {/** It will show the number of items in the cart */}
+          <CartIcon />
         </div>
+        {/** If isCartOpen is true, then we show the CartDropdown component */}
+        {isCartOpen && <CartDropdown />}
       </div>
       {/** The Outlet component is used to render the child routes of the current route */}
 
