@@ -5,7 +5,7 @@ import ProductCard from '../../components/product-card/product-card.component';
 import './shop.styles.scss';
 const Shop = () => {
   const { products } = useContext(ProductsContext);
-  console.log(products); // Logging the shop data to the console for debugging purposes
+  //console.log(products); // Logging the shop data to the console for debugging purposes
   return (
     <div className="products-container">
       {/** Here you can map through products to display the items in the shop */}

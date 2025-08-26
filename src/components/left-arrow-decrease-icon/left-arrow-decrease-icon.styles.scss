@@ -1,0 +1,16 @@
+.left-arrow-icon-container {
+  width: 15px;
+  height: 60px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+
+  //justify-content: space-between;
+  //gap: 3px;
+  cursor: pointer;
+  .left-arrow-icon {
+    width: 15px;
+    height: 15px;
+  }
+}

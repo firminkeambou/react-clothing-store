@@ -5,7 +5,11 @@ import { CartContext } from '../../contexts/cart.context'; // Importing the Togg
 const CartIcon = () => {
   const { setIsCartOpen, cartCount } = useContext(CartContext);
 
-  const toggleCartDropdown = () => setIsCartOpen((prev) => !prev);
+  const toggleCartDropdown = () => {
+    cartCount == 0
+      ? alert(`empty Card, Can't be opened`)
+      : setIsCartOpen((prev) => !prev);
+  };
 
   return (
     <div className="cart-icon-container" onClick={toggleCartDropdown}>

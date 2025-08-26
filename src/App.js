@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './routes/home/home.component.jsx'; // Importing the Home component
 import Navigation from './routes/navigation/navigation.component.jsx';
 import Authentication from './routes/authentication/authentication.component.jsx'; // Importing the SignIn component
-
+import CheckOut from './routes/check-out/check-out.component.jsx';
 import Shop from './routes/shop/shop.component.jsx'; // Importing the Shop component
 const App = () => {
   // the App component serves as the main entry point for the application
@@ -21,6 +21,7 @@ const App = () => {
         <Route path="shop" element={<Shop />} />
         {/** Nested route == sign-in */}
         <Route path="auth" element={<Authentication />} />
+        <Route path="checkout" element={<CheckOut />} />
       </Route>
     </Routes>
   );
