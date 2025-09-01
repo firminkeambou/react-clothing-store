@@ -16,6 +16,10 @@ import {
   doc, //get a reference to a document in the Firestore database
   getDoc, // retrieves a document from the Firestore database
   setDoc, // sets a document in the Firestore database
+  collection, // gets a reference to a collection in the Firestore database
+  writeBatch, // handle transactions; creates a write batch object for performing multiple write operations
+  query,
+  getDocs,
 } from 'firebase/firestore'; // imports the Firestore database service
 
 // Firebase configuration object containing the necessary keys and identifiers for your Firebase project and it's obtained from the Firebase console(online)
@@ -48,6 +52,39 @@ export const signInWithGoogleRedirect = () =>
 
 // Initialize Firestore
 export const db = getFirestore(); // gets the Firestore database instance, which is used to interact with the Firestore database, this is the second step to use Firestore services in your app, it creates a Firestore instance that can be used to access Firestore collections and documents
+//down below, collectionKey is the name of the collection. if the collection doesn't exist , it will be created
+//objectsToAdd are documents or records in SQL database jargon
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey); // gets a reference to the collection in the Firestore database
+  const batch = writeBatch(db); // creates a write batch object for performing multiple write operations, handling therefore transactions
+
+  objectsToAdd.forEach((obj) => {
+    const docRef = doc(collectionRef, obj.title.toLowerCase()); // creates a reference to the document in the collection
+    batch.set(docRef, obj); //instanciationof a class // adds a set operation to the batch for the document
+  });
+
+  await batch.commit(); // commits the batch write operation
+  console.log('done');
+};
+
+// getdocuments data from firestore
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef); // querying
+  const querySnapshot = await getDocs(q); // getting documents from categories collection
+  const categoriesMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoriesMap;
+};
+// end getting documents from firestore
 
 export const createUserDocumentFromAuth = async (
   userAuth,

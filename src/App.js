@@ -14,11 +14,11 @@ const App = () => {
       <Route path="/" element={<Navigation />}>
         {/** The Navigation component is used to render the navigation bar */}
         {/** It also contains an Outlet component to render child routes */}
-        {/** The Outlet component will render the child component when the path matches '/' */}
+        {/** The Outlet component will render the child component when the beginning of the path matches '/' */}
 
         {/** Nested route == shop */}
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
+        <Route path="shop/*" element={<Shop />} />
         {/** Nested route == sign-in */}
         <Route path="auth" element={<Authentication />} />
         <Route path="checkout" element={<CheckOut />} />
