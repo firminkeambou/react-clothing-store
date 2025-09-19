@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react'; //, { useContext }
 import { useState } from 'react';
 import FormInput from '../form-input/form-input.component';
-import './sign-up-form.styles.scss';
+import { SignUpContainer, SignUpHeader } from './sign-up-form.styles.jsx';
 import Button from '../button/button.component';
 //import { UserContext } from '../../contexts/user.context'; // Importing the UserContext to access user state
 import {
@@ -62,8 +62,8 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="sign-up-container">
-      <h2> I do not have an account ? </h2>
+    <SignUpContainer>
+      <SignUpHeader> I do not have an account ? </SignUpHeader>
       <span>Sign Up with your email and password</span>
 
       <form onSubmit={handleSubmit}>
@@ -106,11 +106,9 @@ const SignUpForm = () => {
           autoComplete="off" // prevents the browser from autofilling the input field
           required
         />
-        <Button buttonType="" type="submit">
-          Sign Up
-        </Button>
+        <Button type="submit">Sign Up</Button>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 export default SignUpForm;

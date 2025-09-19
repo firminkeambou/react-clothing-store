@@ -1,16 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import ProductCard from '../product-card/product-card.component';
-import './category-preview.styles.scss';
+import {
+  CategoryPreviewContainer,
+  CategoryTitle,
+  Preview,
+} from './category-preview.styles.jsx';
 const CategoryPreview = ({ title, products }) => {
   return (
-    <div className="category-preview-container">
+    <CategoryPreviewContainer>
       <h2>
-        <Link className="category-title" to={title.toLowerCase()}>
+        <CategoryTitle to={title.toLowerCase()}>
           {title.toUpperCase()}
-        </Link>
+        </CategoryTitle>
       </h2>
-      <div className="preview">
+      <Preview>
         {
           products
             .filter((_, index) => index < 4)
@@ -18,8 +22,8 @@ const CategoryPreview = ({ title, products }) => {
               <ProductCard key={product.id} product={product} />
             )) // "_" means we are not using the first argument (the product) in the filter function, on the other hands , we are displaying the first four products
         }
-      </div>
-    </div>
+      </Preview>
+    </CategoryPreviewContainer>
   );
 };
 

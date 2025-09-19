@@ -1,7 +1,7 @@
 import React from 'react';
 import { categories } from '../../db/categories.js'; // Importing categories data
 import Directory from '../../components/directory/directory.component';
-import { Outlet } from 'react-router-dom';
+//import { Outlet } from 'react-router-dom';
 
 const Home = () => {
   // the Home component serves as the main entry point for the application
@@ -10,7 +10,6 @@ const Home = () => {
   return (
     <div className="App">
       <Directory categories={categories} />
-      <Outlet />
     </div>
   );
 };

@@ -1,8 +1,14 @@
 import React from 'react';
 import { useContext } from 'react'; // Importing useContext to access context values
 import { CartContext } from '../../contexts/cart.context'; // Importing the CartContext to manage
-import Button from '../button/button.component';
-import './product-card.styles.scss';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
+import {
+  ProductCardContainer,
+  Image,
+  Name,
+  Price,
+  Footer,
+} from './product-card.styles.jsx';
 const ProductCard = ({ product }) => {
   const { name, price, imageUrl } = product; // Destructuring product properties
   const { addItemToCart } = useContext(CartContext);
@@ -13,16 +19,20 @@ const ProductCard = ({ product }) => {
     addItemToCart(product);
   };
   return (
-    <div className="product-card-container">
-      <img src={imageUrl} alt={name} />
-      <div className="footer">
-        <span className="name">{name}</span>
-        <span className="price">${price}</span>
-      </div>
-      <Button buttonType="inverted" onClick={handleAddItemToCart}>
+    <ProductCardContainer>
+      <Image src={imageUrl} alt={name} />
+      <Footer>
+        <Name>{name}</Name>
+        <Price>${price}</Price>
+      </Footer>
+      <Button
+        type="button"
+        buttonType={BUTTON_TYPE_CLASSES.inverted}
+        onClick={handleAddItemToCart}
+      >
         Add to Cart
       </Button>
-    </div>
+    </ProductCardContainer>
   );
 };
 

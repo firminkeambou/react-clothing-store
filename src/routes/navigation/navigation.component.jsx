@@ -1,14 +1,19 @@
 import React, { useContext } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import CartIcon from '../../components/cart-icon/cart-icon.component';
 import { Fragment } from 'react'; // used to wrap multiple elements without adding extra nodes to the DOM
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'; // custom SVG logo component, this allows us to use the SVG as a React component
 import { UserContext } from '../../contexts/user.context';
 import { CartContext } from '../../contexts/cart.context'; // Importing the ToggleContext to manage toggle state
 import { signOutUser } from '../../utils/firebase/firebase.utils'; // Importing the signOutUser function to handle user sign out
-import './navigation.styles.scss'; // styles for the navigation component
+//import './navigation.styles.scss'; // styles for the navigation component
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
-
+import {
+  NavigationContainer,
+  LogoContainer,
+  NavLinks,
+  NavLink,
+} from './navigation.styles';
 // <Link className='nav-link' to='/'> Home </Link>
 //<Link className='nav-link' to='/contact'> Contact </Link>
 const Navigation = () => {
@@ -26,37 +31,31 @@ const Navigation = () => {
       */
   return (
     <Fragment>
-      <div className="navigation">
-        <Link className="logo-container" to="/">
+      <NavigationContainer>
+        <LogoContainer to="/">
           <CrwnLogo className="logo" />
-        </Link>
-        <div className="nav-links-container">
-          <Link className="nav-link" to="/shop">
-            {' '}
-            SHOP{' '}
-          </Link>
+        </LogoContainer>
+        <NavLinks>
+          <NavLink to="/shop"> SHOP </NavLink>
           {
             /** If currentUser is not null, then the user is signed in, so we show the SIGN OUT link */
             currentUser ? (
-              <span className="nav-link" onClick={signOutUser}>
+              <NavLink as="span" onClick={signOutUser}>
                 {' '}
                 SIGN OUT{' '}
-              </span>
+              </NavLink>
             ) : (
               /** If currentUser is null, then the user is not signed in, so we show the SIGN IN link */
-              <Link className="nav-link" to="/auth">
-                {' '}
-                SIGN IN{' '}
-              </Link>
+              <NavLink to="/auth"> SIGN IN </NavLink>
             )
           }
           {/** CartIcon component is used to show the cart icon in the navigation bar */}
           {/** It will show the number of items in the cart */}
           <CartIcon />
-        </div>
+        </NavLinks>
         {/** If isCartOpen is true, then we show the CartDropdown component */}
         {isCartOpen && <CartDropdown />}
-      </div>
+      </NavigationContainer>
       {/** The Outlet component is used to render the child routes of the current route */}
 
       {/** In this case, it will render the Home component when the path matches '/' */}
