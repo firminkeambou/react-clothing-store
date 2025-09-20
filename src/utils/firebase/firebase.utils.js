@@ -95,7 +95,7 @@ export const createUserDocumentFromAuth = async (
   const userDocRef = doc(db, 'users', userAuth.uid); // creates a reference to the user document in the Firestore database using the user's unique ID, even if the document does not exist yet, google will still create a reference, just to make sure next time, google will keep the reference.
   //console.log(userDocRef);
   const userSnapshot = await getDoc(userDocRef); // retrieves the document snapshot from the Firestore database using the user document reference
-  console.log(userSnapshot.exists()); // checks if the document exists in the Firestore database, by default it will return false, because the document does not exist yet, but it will create a reference to the document in the Firestore database
+  //console.log(userSnapshot.exists()); // checks if the document exists in the Firestore database, by default it will return false, because the document does not exist yet, but it will create a reference to the document in the Firestore database
 
   if (!userSnapshot.exists()) {
     // if the document does not exist, it means the user is signing up for the first time
