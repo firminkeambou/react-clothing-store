@@ -7,14 +7,14 @@ import {
 import { useContext } from 'react'; // Importing useContext to access context values
 import { CartContext } from '../../contexts/cart.context'; // Importing the ToggleContext to
 const CartIcon = () => {
-  const { setIsCartOpen, cartCount } = useContext(CartContext);
+  const { setIsCartOpen, cartCount, isCartOpen } = useContext(CartContext);
 
   const toggleCartDropdown = () => {
     cartCount === 0
       ? alert(`empty Card, Can't be opened`)
-      : setIsCartOpen((prev) => !prev);
+      : setIsCartOpen(isCartOpen);
   };
-
+  //setIsCartOpen((prev) => !prev);
   return (
     <CartIconContainer onClick={toggleCartDropdown}>
       <ShoppingIcon />

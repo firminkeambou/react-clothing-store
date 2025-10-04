@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from 'react';
-
+import { createContext, useReducer } from 'react';
+import { createAction } from '../utils/reducer/reducer.utils';
 const newCartCount = (cartitems) =>
   cartitems.reduce((total, item) => total + item.quantity, 0);
 // total cost of the cart
@@ -86,20 +86,106 @@ export const CartContext = createContext({
   cartCount: 0,
   cartTotalPrice: 0,
 });
+/// using a reducer for states
+// step1  === define actions needed to update a state
+export const CART_ACTION_TYPES = {
+  SET_CART_ITEMS: 'SET_CART_ITEMS',
+  SET_IS_CART_OPEN: 'SET_IS_CART_OPEN',
+  SET_CART_TOTAL_ITEMS: 'SET_CART_TOTAL_ITEMS',
+  SET_CART_TOTAL_PRICE: 'SET_CART_TOTAL_PRICE',
+};
 
+//step2  === define a reducer function
+const cartReducer = (state, action) => {
+  console.log('dispatching cart action');
+  console.log('Cart reducer action:', action);
+  const { type, payload } = action; // Destructure type and payload from the action object
+  switch (type) {
+    case CART_ACTION_TYPES.SET_CART_ITEMS:
+      //const { cartItems, cartCount, cartTotalPrice } = payload;
+      return {
+        ...state,
+        ...payload,
+      };
+    /*case CART_ACTION_TYPES.SET_CART_TOTAL_ITEMS:
+      return {
+        ...state,
+        cartCount: payload,
+      };*/
+    case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+      return {
+        ...state,
+        isCartOpen: payload,
+      };
+    /*case CART_ACTION_TYPES.SET_CART_TOTAL_PRICE:
+      return {
+        ...state,
+        cartTotalPrice: payload,
+      };*/
+    default:
+      throw new Error(`Unhandled action type: ${type} in userReducer`); // Error handling for unrecognized action types
+  }
+};
+//step3   === define initial state
+const CART_INITIAL_STATE = {
+  cartItems: [], // default value for cartItems
+  isCartOpen: false, // default value for isCartOpen
+  cartCount: 0, //total Items in the CART
+  cartTotalPrice: 0,
+};
+
+//step4 === use hook useReducer(); within the provider component
+//const [state, dispatch] = useReducer
+
+//step 5 === for each function that set a state, call dispatch to give instructions
+//  const setCurrentUser = (user) => {     dispatch({})}
 export const CartProvider = ({ children }) => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
-  const [cartTotalPrice, setCartTotalPrice] = useState(0);
+  const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+  //const [isCartOpen, setIsCartOpen] = useState(false);
+  // const [cartItems, setCartItems] = useState([]);
+  // const [cartCount, setCartCount] = useState(0);
+  //const [cartTotalPrice, setCartTotalPrice] = useState(0);
 
-  useEffect(() => {
+  const { cartItems, cartCount, isCartOpen, cartTotalPrice } = state; // Destructure cartItems from the state object
+  const setCartItems = (newCartItems) => {
+    dispatch(
+      createAction(
+        CART_ACTION_TYPES.SET_CART_ITEMS,
+        updateCartItemsReducer(newCartItems)
+      )
+    );
+  };
+  /* const setCartCount = (newcount) => {
+    dispatch({
+      type: CART_ACTION_TYPES.SET_CART_TOTAL_ITEMS,
+      payload: newcount,
+    });
+  };*/
+  const setIsCartOpen = (currentStatus) => {
+    dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, !currentStatus));
+  };
+  /*const setCartTotalPrice = (newTotal) => {
+    dispatch({
+      type: CART_ACTION_TYPES.SET_CART_TOTAL_PRICE,
+      payload: newTotal,
+    });
+  };*/
+  /*useEffect(() => {
     setCartCount(newCartCount(cartItems));
   }, [cartItems]);
 
   useEffect(() => {
     setCartTotalPrice(totCartPrice(cartItems));
-  }, [cartItems]);
+  }, [cartItems]);*/
+
+  const updateCartItemsReducer = (newCartItems) => {
+    // Generate new cart total and new cart count
+    return {
+      cartItems: newCartItems,
+      cartCount: newCartCount(newCartItems),
+      cartTotalPrice: totCartPrice(newCartItems),
+    };
+  };
 
   // we stopped calling setCartCount inside the below function because of the synchronous aspect of setCartCount, so it's better to use "useEffect" or even expose a function
   const addItemToCart = (productToAdd) => {

@@ -11,13 +11,13 @@ import {
 } from './cart-dropdown.styles.jsx'; // Importing styled components for styling
 const CartDropdown = () => {
   const navigate = useNavigate();
-  const { setIsCartOpen, cartItems } = useContext(CartContext);
+  const { setIsCartOpen, cartItems, isCartOpen } = useContext(CartContext);
   const goToCheckOutHandler = () => {
     if (cartItems.length <= 0) {
       return alert('Sorry!!! the cart is empty at the moment');
     }
     navigate('/checkout'); // Replace '/target-page' with your desired path
-    setIsCartOpen(false); // Close the dropdown after checkout
+    setIsCartOpen(isCartOpen); // Close the dropdown after checkout
   };
   /*
   const handleCheckout = () => {

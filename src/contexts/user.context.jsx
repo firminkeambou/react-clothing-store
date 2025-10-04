@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useReducer } from 'react';
+import { createAction } from '../utils/reducer/reducer.utils';
 import {
   onAuthStateChangedListener,
   signOutUser,
@@ -11,10 +12,40 @@ export const UserContext = createContext({
   setCurrentUser: () => null, // default function to set currentUser
   testVariable: 'test', // an additional variable to demonstrate context usage
 });
+// using reducer is more complex but more powerful, for this simple case useState is enough
+// user Reducer
+
+export const USER_ACTION_TYPES = {
+  SET_CURRENT_USER: 'SET_CURRENT_USER',
+};
+const userReducer = (state, action) => {
+  console.log('dispatching user action');
+  console.log('User reducer action:', action);
+  const { type, payload } = action; // Destructure type and payload from the action object
+  switch (type) {
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: payload,
+      };
+    default:
+      throw new Error(`Unhandled action type: ${type} in userReducer`); // Error handling for unrecognized action types
+  }
+};
+
+const INITIAL_STATE = {
+  currentUser: null,
+};
 
 export const UserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-
+  //const [currentUser, setCurrentUser] = useState(null); // State to hold the current user, initially set to null , this was used before useReducer
+  const [state, dispatch] = useReducer(userReducer, INITIAL_STATE); // dispatch is a function used to send actions to the reducer
+  const { currentUser } = state; // Destructure currentUser from the state object
+  console.log('Current Initial User:', currentUser);
+  // Function to update the currentUser state
+  const setCurrentUser = (user) => {
+    dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
+  };
   const value = {
     currentUser,
     setCurrentUser,
