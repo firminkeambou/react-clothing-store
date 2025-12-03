@@ -77,12 +77,13 @@ export const getCategoriesAndDocuments = async () => {
   const collectionRef = collection(db, 'categories');
   const q = query(collectionRef); // querying
   const querySnapshot = await getDocs(q); // getting documents from categories collection
-  const categoriesMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()); //returns an array of category objects
+  /*   const categoriesMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
     const { title, items } = docSnapshot.data();
     acc[title.toLowerCase()] = items;
     return acc;
-  }, {});
-  return categoriesMap;
+  }, {}); */
+  //return categoriesMap;
 };
 // end getting documents from firestore
 

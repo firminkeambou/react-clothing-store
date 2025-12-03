@@ -1,7 +1,10 @@
-import { useContext } from 'react';
+//import { useContext } from 'react';
 import CheckOutItem from '../../components/check-out-item/check-out-item.component';
-import { CartContext } from '../../contexts/cart.context';
+//import { CartContext } from '../../contexts/cart.context';
 import './check-out.styles.jsx';
+import { selectCartItems } from '../../redux/store/cart/cart.selector.js';
+import { useSelector } from 'react-redux';
+import { selectCartTotalPrice } from '../../redux/store/cart/cart.selector.js';
 import {
   HeaderPrice,
   HeaderRemove,
@@ -10,7 +13,9 @@ import {
   CheckoutHeader,
 } from './check-out.styles.jsx';
 const CheckOut = () => {
-  const { cartItems, cartTotalPrice } = useContext(CartContext);
+  const cartItems = useSelector(selectCartItems);
+  const cartTotalPrice = useSelector(selectCartTotalPrice);
+  //const { cartItems, cartTotalPrice } = useContext(CartContext);
   //console.log(cartItems[0]);
   return (
     <CheckoutContainer>

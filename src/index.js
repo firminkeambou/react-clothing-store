@@ -2,26 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
-import { UserProvider } from './contexts/user.context'; // Importing the UserProvider context to manage user state  == the main idea here is to get access to thee current state of the user, and the function to update it across the application
-import { CategoriesProvider } from './contexts/categories.context';
-import { CartProvider } from './contexts/cart.context'; // Importing the ToggleProvider context to manage toggle state
+import { Provider } from 'react-redux';
+import { store } from './redux/store/store'; // Importing the Redux store to provide it to the React application
+//import { UserProvider } from './contexts/user.context'; // Importing the UserProvider context to manage user state  == the main idea here is to get access to thee current state of the user, and the function to update it across the application
+//import { CategoriesProvider } from './contexts/categories.context';
+//import { CartProvider } from './contexts/cart.context'; // Importing the ToggleProvider context to manage toggle state
 import App from './App'; // Importing the main App component
 //import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-        <CategoriesProvider>
-          <CartProvider>
-            {/** The UserProvider component wraps the App component to provide user context to the entire application */}
-            {/** This allows any component within the App to access the current user state and update it */}
-            <App />
-          </CartProvider>
-        </CategoriesProvider>
-      </UserProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        {/*<UserProvider> we comment this out because redux is going to take over  and we need to find a way to handle it, as UserProvider was at the top, we take the useEffect from UserProvider and use it at the very Top of the App component*/}
+        {/* <CategoriesProvider> we comment this out because redux is going to take over */}
+        {/* <CartProvider> we comment this out because redux is going to take over */}
+
+        {/** The UserProvider component wraps the App component to provide user context to the entire application */}
+        {/** This allows any component within the App to access the current user state and update it */}
+        <App />
+        {/* </CartProvider> we comment this out because redux is going to take over */}
+        {/* </CategoriesProvider> we comment this out because redux is going to take over */}
+        {/* </UserProvider>we comment this out because redux is going to take over */}
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 
