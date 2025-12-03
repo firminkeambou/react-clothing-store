@@ -3,19 +3,25 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 //import { CategoriesContext } from '../../contexts/categories.context';
 import { useSelector } from 'react-redux';
-import { selectCategoriesMap } from '../../redux/store/categories/category.selector';
+import {
+  selectCategoriesMap,
+  selectIsCategoriesLoading,
+} from '../../redux/store/categories/category.selector';
 import ProductCard from '../../components/product-card/product-card.component';
 import { CategoryContainer, CategoryTitle } from './category.styles.jsx';
+import Spinner from '../../components/spinner/spinner.component.jsx';
 const Category = () => {
   const { category } = useParams();
   //const { categoriesMap } = useContext(CategoriesContext);
-  console.log('render/re-rendering category component');
+  //console.log('render/re-rendering category component');
   const categoriesMap = useSelector(selectCategoriesMap);
+  const isLoading = useSelector(selectIsCategoriesLoading);
+
   const [products, setProducts] = useState(categoriesMap[category]);
   //const products = categoriesMap[category]; this can be used, but it will be re-executed whenever the component is re-rendered, to avoid that, we can use useMemo hook or useEffect and useState
 
   useEffect(() => {
-    console.log('useEffect fired calling setProducts in category component');
+    //console.log('useEffect fired calling setProducts in category component');
     setProducts(categoriesMap[category]);
   }, [category, categoriesMap]);
 
@@ -23,14 +29,18 @@ const Category = () => {
   return (
     <>
       <CategoryTitle>{category.toUpperCase()}</CategoryTitle>
-      <CategoryContainer>
-        {products &&
-          products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-      </CategoryContainer>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <CategoryContainer>
+          {products &&
+            products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </CategoryContainer>
+      )}
+      ;
     </>
   );
 };
-
 export default Category;

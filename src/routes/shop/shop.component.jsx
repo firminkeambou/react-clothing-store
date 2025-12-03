@@ -5,8 +5,9 @@ import React, { useEffect } from 'react';
 //import CategoryPreview from '../../components/category-preview/category-preview.component';
 import { Routes, Route } from 'react-router-dom';
 import CategoriesPreview from '../categories-preview/categories-preview.component';
-import { setCategories } from '../../redux/store/categories/category.action';
-import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
+//import { setCategories } from '../../redux/store/categories/category.action';
+//import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
+import { fetchCategoriesAsync } from '../../redux/store/categories/category.action';
 import { useDispatch } from 'react-redux';
 import Category from '../category/category.component';
 const Shop = () => {
@@ -17,10 +18,11 @@ const Shop = () => {
   // the below code is the useEffect for categories
   useEffect(() => {
     //this is a recommended pattern when fetching data using async/await; Additional helper function is a requirement especially for async/await
-    const fetchCategories = async () => {
-      const categoriesArray = await getCategoriesAndDocuments();
+    const fetchCategories = () => {
+      //const categoriesArray = await getCategoriesAndDocuments(); no more needed as we are using redux-thunk
+      //dispatch(setCategories(categoriesArray)); no more needed as we are using redux-thunk
       //console.log(categoriesArray);
-      dispatch(setCategories(categoriesArray));
+      dispatch(fetchCategoriesAsync());
       //console.log(categoriesMap);
     };
     fetchCategories();

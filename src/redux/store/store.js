@@ -10,21 +10,22 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import logger from 'redux-logger'; // logger helps us to see what actions look like before and after a dispatch in the browser console, should be used only in development mode
 import { loggerMiddleware } from './middleware/loggers'; // our custom logger middleware
 import rootReducer from './root-reducer'; // our root reducer
-
+import { thunk } from 'redux-thunk'; // to handle async actions in redux
 //config object for redux-persist, only needed if we want to persist our store
 const persistConfig = {
   key: 'root', // key for the local storage, the top level of our state object
   storage, // storage method , default is local storage for any web browser
-  blacklist: ['user'], // which reducer we don't want to persist, we don't want to persist user for security reasons and because we are using firebase auth which handles user session for us
-  //whitelist: ['cart', 'categories'], // which reducer we want to persist
+  //blacklist: ['user'], // which reducer we don't want to persist, we don't want to persist user for security reasons and because we are using firebase auth which handles user session for us
+  whitelist: ['cart'], //  whitelist = which reducer we want to persist ;'categories' reducer is no longer included because we are re-fetching it from the backend whenever the app loads, and the spinner shows while loading, also, we don't want the end user to see what he shouldn't see
 };
 // defining a persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 //yarn start lead to development mode, yarn build lead to production mode
 // setting up middleware array
-const middlewares = [process.env.NODE_ENV !== 'production' && logger].filter(
-  Boolean
-); //middleware/ filter boolean values from the middleware array , run before the action reaches the reducer, it especially allows us to have track of of states via the browser console
+const middlewares = [
+  process.env.NODE_ENV !== 'production' && logger,
+  thunk,
+].filter(Boolean); //middleware/ filter boolean values from the middleware array , run before the action reaches the reducer, it especially allows us to have track of of states via the browser console
 
 //the below line enable redux devtools extension in the browser
 const composeEnhancer =
