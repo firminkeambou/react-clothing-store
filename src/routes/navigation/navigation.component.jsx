@@ -6,8 +6,10 @@ import { Fragment } from 'react'; // used to wrap multiple elements without addi
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'; // custom SVG logo component, this allows us to use the SVG as a React component
 //import { UserContext } from '../../contexts/user.context';
 //import { CartContext } from '../../contexts/cart.context'; // Importing the ToggleContext to manage toggle state
-import { signOutUser } from '../../utils/firebase/firebase.utils'; // Importing the signOutUser function to handle user sign out
+//import { signOutUser } from '../../utils/firebase/firebase.utils'; // Importing the signOutUser function to handle user sign out
 import { selectCurrentUser } from '../../redux/store/user/user.selector';
+import { signoutStart } from '../../redux/store/user/user.action.js';
+import { useDispatch } from 'react-redux';
 //import './navigation.styles.scss'; // styles for the navigation component
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 import { selectIsCartOpen } from '../../redux/store/cart/cart.selector.js';
@@ -20,6 +22,7 @@ import {
 // <Link className='nav-link' to='/'> Home </Link>
 //<Link className='nav-link' to='/contact'> Contact </Link>
 const Navigation = () => {
+  const dispatch = useDispatch();
   //const { currentUser } = useContext(UserContext); // Accessing or subscribing to the current user from UserContext
   // below is replacing useContext by useSelector
   // useSelector receives the whole state , therefore, we extract what we need
@@ -36,6 +39,9 @@ const Navigation = () => {
       setCurrentUser(null);
    }
       */
+  const handleSignOutUser = () => {
+    dispatch(signoutStart());
+  };
   return (
     <Fragment>
       <NavigationContainer>
@@ -47,7 +53,7 @@ const Navigation = () => {
           {
             /** If currentUser is not null, then the user is signed in, so we show the SIGN OUT link */
             currentUser ? (
-              <NavLink as="span" onClick={signOutUser}>
+              <NavLink as="span" onClick={handleSignOutUser}>
                 {' '}
                 SIGN OUT{' '}
               </NavLink>

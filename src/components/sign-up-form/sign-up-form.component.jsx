@@ -1,13 +1,23 @@
 import React from 'react'; //, { useContext }
+//import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import FormInput from '../form-input/form-input.component';
+import { createUserEmailPasswordStart } from '../../redux/store/user/user.action.js';
+import {
+  selectErrorSignUP,
+  selectUserCreationSuccess,
+  selectUserCreated,
+} from '../../redux/store/user/user.selector.js';
 import { SignUpContainer, SignUpHeader } from './sign-up-form.styles.jsx';
 import Button from '../button/button.component';
 //import { UserContext } from '../../contexts/user.context'; // Importing the UserContext to access user state
+/*
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
-} from '../../utils/firebase/firebase.utils'; // imports the function to create a user document from authentication
+} from '../../utils/firebase/firebase.utils'; */ // imports the function to create a user document from authentication
+import { useDispatch } from 'react-redux';
 const defaultFormFields = {
   displayName: '',
   email: '',
@@ -16,6 +26,10 @@ const defaultFormFields = {
 };
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
+  const errorSignUp = useSelector(selectErrorSignUP);
+  const creationUserSuccess = useSelector(selectUserCreationSuccess);
+  const UserCreatedSuccess = useSelector(selectUserCreated);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
@@ -27,7 +41,10 @@ const SignUpForm = () => {
       alert('Passwords do not match');
       return;
     }
+
     try {
+      dispatch(createUserEmailPasswordStart(email, password, displayName));
+      /*
       const { user } = await createAuthUserWithEmailAndPassword(
         email,
         password
@@ -38,7 +55,7 @@ const SignUpForm = () => {
       // if the user document already exists, it will update the existing document with the new data given that onAuthStateChangedListener will have created the user document reference by the time we get here
       const userDocRef = await createUserDocumentFromAuth(user, {
         displayName,
-      });
+      });*/
       // creates a user document in Firestore with the authenticated user and display name
 
       resetFormFields(); // resets the form fields to default after successful sign up
@@ -106,6 +123,29 @@ const SignUpForm = () => {
           autoComplete="off" // prevents the browser from autofilling the input field
           required
         />
+        <div style={{ paddingBottom: 24 }}>
+          {errorSignUp &&
+            errorSignUp.code &&
+            errorSignUp.code === 'auth/email-already-in-use' && (
+              <span style={{ color: 'red', fontSize: 28 }}>
+                Cannot create user, email already in use
+              </span>
+            )}
+
+          {errorSignUp &&
+            errorSignUp.code &&
+            errorSignUp.code !== 'auth/email-already-in-use' && (
+              <span style={{ color: 'red', fontSize: 28 }}>
+                Error creating user
+              </span>
+            )}
+
+          {creationUserSuccess && (
+            <span style={{ color: 'green', fontSize: 28 }}>
+              {`User  ${UserCreatedSuccess.displayName} Successfully created`}
+            </span>
+          )}
+        </div>
         <Button type="submit">Sign Up</Button>
       </form>
     </SignUpContainer>

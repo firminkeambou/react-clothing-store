@@ -41,8 +41,8 @@ const googleProvider = new GoogleAuthProvider(); // creates a new instance of th
 googleProvider.setCustomParameters({
   prompt: 'select_account',
 }); // sets the custom parameters for the Google authentication provider, in this case, it prompts the user to select an account
-export const auth = getAuth(); // gets the Firebase Authentication instance
-export const signInWithGooglePopup = () =>
+export const auth = getAuth(firebaseApp); // gets the Firebase Authentication instance
+export const signInWithGooglePopup = async () =>
   signInWithPopup(auth, googleProvider); // exports a function that allows users to sign in with a Google popup window
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider); // exports a function that allows users to sign in with a Google redirect, which means the user will be redirected to the Google sign-in page and then back to your app after authentication
@@ -51,7 +51,7 @@ export const signInWithGoogleRedirect = () =>
 //https://console.firebase.google.com/u/0/project/seven7digit-clothing-db/authentication/providers
 
 // Initialize Firestore
-export const db = getFirestore(); // gets the Firestore database instance, which is used to interact with the Firestore database, this is the second step to use Firestore services in your app, it creates a Firestore instance that can be used to access Firestore collections and documents
+export const db = getFirestore(firebaseApp); // gets the Firestore database instance, which is used to interact with the Firestore database, this is the second step to use Firestore services in your app, it creates a Firestore instance that can be used to access Firestore collections and documents
 //down below, collectionKey is the name of the collection. if the collection doesn't exist , it will be created
 //objectsToAdd are documents or records in SQL database jargon
 
@@ -115,9 +115,9 @@ export const createUserDocumentFromAuth = async (
       console.log('error creating the user', error.message); // logs any errors that occur while setting the document
     }
   }
-  return userDocRef; // returns the user document reference, which can be used to access the user's document in the Firestore database
+  return userSnapshot; // returns the user document reference, which can be used to access the user's document in the Firestore database
 };
-
+// creating a user in fireBase "Authentication Tab", then the observer  "onAuthStateChanged" will be triggered and save the user in "users" collection (firestore Database Tab)
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return; // checks if the email and password are provided, if not, it returns undefined
   return await createUserWithEmailAndPassword(auth, email, password); // creates a new user with the provided email and password using Firebase Authentication
@@ -130,5 +130,29 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 
 export const signOutUser = async () => await signOut(auth); // exports a function that allows users to sign out of their account, it uses the Firebase Authentication signOut method
 
+/*
+no longer needed as we will rewrite it as getCurrentUser, sa saga can leverage it
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback); // open listener ===exports a function that allows you to listen for changes in the authentication state of the user and execute a callback function when the authentication state changes, this is useful to check if the user is signed in or not, and update the UI accordingly
+*/
+// rewriting of onAuthStateChangedListener, so it can be used with redux-saga
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        // Resolve the promise with the user object (or null if logged out)
+        resolve(userAuth);
+        // Immediately unsubscribe after the first state change is received.
+        unsubscribe();
+      },
+      (error) => {
+        // Reject the promise if an error occurs during authentication state changes.
+        reject(error);
+        // Unsubscribe in case of an error as well.
+        unsubscribe();
+      }
+    );
+  });
+};

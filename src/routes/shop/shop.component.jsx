@@ -7,7 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import CategoriesPreview from '../categories-preview/categories-preview.component';
 //import { setCategories } from '../../redux/store/categories/category.action';
 //import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
-import { fetchCategoriesAsync } from '../../redux/store/categories/category.action';
+import { fetchCategoriesStart } from '../../redux/store/categories/category.action';
 import { useDispatch } from 'react-redux';
 import Category from '../category/category.component';
 const Shop = () => {
@@ -22,7 +22,7 @@ const Shop = () => {
       //const categoriesArray = await getCategoriesAndDocuments(); no more needed as we are using redux-thunk
       //dispatch(setCategories(categoriesArray)); no more needed as we are using redux-thunk
       //console.log(categoriesArray);
-      dispatch(fetchCategoriesAsync());
+      dispatch(fetchCategoriesStart()); // now, with saga , we dispatch fetchCategoriesStart() because it will dispatched "CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START" with is the first action RootSaga is listening
       //console.log(categoriesMap);
     };
     fetchCategories();
