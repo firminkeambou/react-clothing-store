@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './routes/home/home.component.jsx'; // Importing the Home component
-import Navigation from './routes/navigation/navigation.component.jsx';
-import Authentication from './routes/authentication/authentication.component.jsx'; // Importing the SignIn component
-import CheckOut from './routes/check-out/check-out.component.jsx';
-import Shop from './routes/shop/shop.component.jsx'; // Importing the Shop component
+import Home from './routes/home/home.component'; // Importing the Home component
+import Navigation from './routes/navigation/navigation.component';
+import Authentication from './routes/authentication/authentication.component'; // Importing the SignIn component
+import CheckOut from './routes/check-out/check-out.component';
+import Shop from './routes/shop/shop.component'; // Importing the Shop component
 /*
 import {
   onAuthStateChangedListener,
@@ -39,7 +39,7 @@ const App = () => {
     //console.log('action dispatched ::', ); // Dispatching the action to set the current user in the Redux store
 
     //dispatch(setCurrentUser(user)); //
-  }, []);
+  }, [dispatch]);
   ///return unsubscribe; // Cleanup function to unsubscribe from the listener when the component unmounts
   //}, [dispatch]); // This effect runs when the component mounts and sets the currentUser to null initially and whenever the reference to dispatch changes, it will re-run // in fact, there is no point using dispatch here as with redux, it never changes
 
